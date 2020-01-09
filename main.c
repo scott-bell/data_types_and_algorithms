@@ -34,10 +34,22 @@ void insert(struct Array *arr, int index, int x) {
     }
 }
 
-int find(struct Array *arr, int x) {
+
+void swap(int* a, int* b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+// linear search
+int find(struct Array *arr, int key) {
     for (int i = 0; i < arr->length; i++) {
-        if (arr->A[i] == x)
+        printf(".");
+        if (arr->A[i] == key) {
+            if (i>0)
+                swap(&arr->A[i],&arr->A[i-1]);
             return i;
+        }
     }
     return -1;
 }
@@ -46,8 +58,16 @@ int main() {
     struct Array arr={{2,3,4,5,6},20,5};
     append(&arr,10);
     display(&arr);
-    int f = find(&arr,4);
-    printf("%d\n", f);
+    printf("%d\n", find(&arr,5));
+    printf("%d\n", find(&arr,5));
+    printf("%d\n", find(&arr,5));
+    printf("%d\n", find(&arr,5));
+    printf("%d\n", find(&arr,5));
+    printf("%d\n", find(&arr,5));
+    printf("%d\n", find(&arr,5));
+    printf("%d\n", find(&arr,5));
+    printf("%d\n", find(&arr,5));
+    display(&arr);
 
     return 0;
 }
