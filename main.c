@@ -6,6 +6,7 @@ struct Array {
     int length;
 };
 
+// O(n)
 void display(struct Array *arr) {
     for (int i = 0; i < arr->length; i++) {
         printf("%d ", arr->A[i]);
@@ -41,10 +42,28 @@ void swap(int* a, int* b) {
     *b = t;
 }
 
-// linear search
+// binary search, O(log n)
+int bin_search(struct Array *arr, int key) {
+    int low = 0;
+    int high = arr->length-1;
+
+    while (low <= high) {
+        int mid = ((low+high)/2);
+        if (arr->A[mid] == key) {
+            return mid;
+        } else if (arr->A[mid] < key) {
+            low = mid + 1;
+        } else {
+            high = mid -1;
+        }
+    }
+    return -1;
+
+}
+
+// linear search O(n)
 int find(struct Array *arr, int key) {
     for (int i = 0; i < arr->length; i++) {
-        printf(".");
         if (arr->A[i] == key) {
             if (i>0)
                 swap(&arr->A[i],&arr->A[i-1]);
@@ -55,19 +74,10 @@ int find(struct Array *arr, int key) {
 }
 
 int main() {
-    struct Array arr={{2,3,4,5,6},20,5};
-    append(&arr,10);
+    struct Array arr={{4, 8, 10, 15, 18, 21, 24, 27, 29, 33, 34, 37, 39, 41, 43},20,15};
     display(&arr);
-    printf("%d\n", find(&arr,5));
-    printf("%d\n", find(&arr,5));
-    printf("%d\n", find(&arr,5));
-    printf("%d\n", find(&arr,5));
-    printf("%d\n", find(&arr,5));
-    printf("%d\n", find(&arr,5));
-    printf("%d\n", find(&arr,5));
-    printf("%d\n", find(&arr,5));
-    printf("%d\n", find(&arr,5));
-    display(&arr);
+    printf("%d", bin_search(&arr, 43));
+
 
     return 0;
 }
