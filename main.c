@@ -55,6 +55,7 @@ int is_sorted(struct Array* arr) {
     return 1;
 }
 
+// pre-condition: both arrays are sorted
 struct Array combine(struct Array* a, struct Array* b, int size)
 {
     struct Array c ={{},size,a->length + b->length};
@@ -77,6 +78,95 @@ struct Array combine(struct Array* a, struct Array* b, int size)
 
     return c;
 }
+
+// pre-condition: both arrays are sorted and contain only unique values
+struct Array make_union(struct Array* a, struct Array* b, int size) {
+    struct Array c = {{}, size, 0};
+    int *p_a = a->A;
+    int *p_a_end = a->A + a->length;
+    int *p_b = b->A;
+    int *p_b_end = b->A + b->length;
+    int *p_c = c.A;
+
+    while ((p_b != p_b_end) && (p_a != p_a_end)) {
+        if (*p_a < *p_b) {
+            *p_c++ = *p_a++;
+            c.length++;
+        }
+        else if (*p_a > *p_b) {
+            *p_c++ = *p_b++;
+            c.length++;
+        }
+        else {
+            *p_c++ = *p_a++;
+            c.length++;
+            p_b++;
+        }
+    }
+    while (p_a != p_a_end) {
+        *p_c++ = *p_a++;
+        c.length++;
+    }
+    while (p_b != p_b_end) {
+        *p_c++ = *p_b++;
+        c.length++;
+    }
+    return c;
+}
+
+// pre-condition: both arrays are sorted and contain only unique values
+struct Array intersection(struct Array* a, struct Array* b, int size) {
+    struct Array c = {{}, size, 0};
+    int *p_a = a->A;
+    int *p_a_end = a->A + a->length;
+    int *p_b = b->A;
+    int *p_b_end = b->A + b->length;
+    int *p_c = c.A;
+
+    while ((p_b != p_b_end) && (p_a != p_a_end)) {
+        if (*p_a < *p_b)
+            p_a++;
+        else if (*p_a > *p_b)
+            p_b++;
+        else {
+            *p_c++ = *p_a++;
+            c.length++;
+            p_b++;
+        }
+    }
+    return c;
+}
+
+// pre-condition: both arrays are sorted and contain only unique values
+struct Array difference(struct Array* a, struct Array* b, int size) {
+    struct Array c = {{}, size, 0};
+    int *p_a = a->A;
+    int *p_a_end = a->A + a->length;
+    int *p_b = b->A;
+    int *p_b_end = b->A + b->length;
+    int *p_c = c.A;
+
+    while ((p_b != p_b_end) && (p_a != p_a_end)) {
+        if (*p_a < *p_b) {
+            *p_c++ = *p_a++;
+            c.length++;
+        }
+        else if (*p_a > *p_b) {
+            *p_c++ = *p_b++;
+            c.length++;
+        }
+        else {
+            p_a++;
+            p_b++;
+        }
+    }
+    while (p_a != p_a_end) {
+        *p_c++ = *p_a++;
+        c.length++;
+    }
+    return c;
+}
+
 
 void swap(int* a, int* b) {
     int t = *a;
@@ -190,9 +280,9 @@ int find(struct Array* arr, int key) {
 }
 
 int main() {
-    struct Array b={{3,8,16,20,25},20,5};
-    struct Array a={{4,10,12,22,23},20,5};
-    struct Array c=combine(&a,&b,20);
+    struct Array b={{1,2,3},20,3};
+    struct Array a={{2,3,4},20,3};
+    struct Array c=difference(&a,&b,20);
     display(&c);
 
 
