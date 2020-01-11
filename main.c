@@ -14,7 +14,6 @@ void display(struct Array* arr) {
     printf("\n");
 }
 
-
 void append(struct Array *arr, int x) {
     if (arr->length < arr->size)
         arr->A[arr->length++]=x;
@@ -56,6 +55,28 @@ int is_sorted(struct Array* arr) {
     return 1;
 }
 
+struct Array combine(struct Array* a, struct Array* b, int size)
+{
+    struct Array c ={{},size,a->length + b->length};
+    int* p_a = a->A;
+    int* p_a_end = a->A+a->length;
+    int* p_b = b->A;
+    int* p_b_end = b->A+b->length;
+    int* p_c = c.A;
+
+    while ((p_b != p_b_end) || (p_a != p_a_end)) {
+        if (
+                ((*p_a <= *p_b) || (p_b == p_b_end)) &&
+                (p_a != p_a_end)
+            ) {
+            *(p_c++) = *(p_a++);
+        } else {
+            *(p_c++) = *(p_b++);
+        }
+    }
+
+    return c;
+}
 
 void swap(int* a, int* b) {
     int t = *a;
@@ -169,10 +190,10 @@ int find(struct Array* arr, int key) {
 }
 
 int main() {
-    struct Array arr={{-6, 3, -8, 10, 5, -7, 12, -4, 2},20,9};
-    display(&arr);
-    neg_pos(&arr);
-    display(&arr);
+    struct Array b={{3,8,16,20,25},20,5};
+    struct Array a={{4,10,12,22,23},20,5};
+    struct Array c=combine(&a,&b,20);
+    display(&c);
 
 
     return 0;
