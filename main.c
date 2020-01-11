@@ -7,12 +7,13 @@ struct Array {
 };
 
 // O(n)
-void display(struct Array *arr) {
+void display(struct Array* arr) {
     for (int i = 0; i < arr->length; i++) {
         printf("%d ", arr->A[i]);
     }
     printf("\n");
 }
+
 
 void append(struct Array *arr, int x) {
     if (arr->length < arr->size)
@@ -35,12 +36,63 @@ void insert(struct Array *arr, int index, int x) {
     }
 }
 
+// pre-condition: arr is sorted
+void insert_sorted(struct Array* arr, int x) {
+    int i = arr->length -1;
+    while (arr->A[i]>x && i>=0)
+    {
+        arr->A[i+1]=arr->A[i];
+        i--;
+    }
+    arr->A[i+1] = x;
+    arr->length++;
+}
+
+int is_sorted(struct Array* arr) {
+    for (int i = 0; i < arr->length - 1; i++) {
+        if (arr->A[i] > arr->A[i+1])
+            return 0;
+    }
+    return 1;
+}
+
 
 void swap(int* a, int* b) {
     int t = *a;
     *a = *b;
     *b = t;
 }
+
+// move neg items to left
+void neg_pos(struct Array* arr) {
+    int* i = arr->A;
+    int* j = arr->A+arr->length-1;
+    while (i < j) {
+        while (*i < 0) {
+            i++;
+        }
+        while (*j >= 0) {
+            j--;
+        }
+        if (i < j)
+            swap(i,j);
+    }
+
+}
+
+void left_shift(struct Array* arr) {
+    int t = arr->A[0];
+    delete(arr, 0);
+    append(arr, t);
+}
+
+
+void reverse(struct Array* arr) {
+    int i = 0, j = arr->length-1;
+    while (i < j)
+        swap(&arr->A[i++],&arr->A[j--]);
+}
+
 
 int* get (struct Array *arr, int index) {
     if (index >= 0 && index < arr->length) {
@@ -117,9 +169,10 @@ int find(struct Array* arr, int key) {
 }
 
 int main() {
-    struct Array arr={{4, 8, 10, 15, 18, 21, 24, 27, 29, 33, 34, 37, 39, 41, 43},20,15};
-
-    printf("%d\n", avg(&arr));
+    struct Array arr={{-6, 3, -8, 10, 5, -7, 12, -4, 2},20,9};
+    display(&arr);
+    neg_pos(&arr);
+    display(&arr);
 
 
     return 0;
